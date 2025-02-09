@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón con Imagen</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-image: url('fondo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            animation: fadeIn 3s ease-in-out;
+            padding-top: 50px;
+            overflow: hidden;
+        }
+
+        .boton {
+            width: 150px;
+            height: 150px;
+            background-image: url('regalo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border 0.3s ease;
+        }
+
+        .boton:hover {
+            border: 2px solid white;
+        }
+
+        .entrada {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: auto;
+            animation: aparecer 1s ease-in-out;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .confeti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: caer 3s linear infinite;
+        }
+
+        @keyframes caer {
+            from {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .matasuegras {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            top: 50%;
+            opacity: 0;
+        }
+
+        .matasuegras.izquierda {
+            left: -100px;
+        }
+
+        .matasuegras.derecha {
+            right: -100px;
+            transform: scaleX(-1);
+        }
+
+        @keyframes matasuegrasIzquierdaAnimacion {
+            from {
+                left: -100px;
+                opacity: 0;
+            }
+            to {
+                left: 0px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes matasuegrasDerechaAnimacion {
+            from {
+                right: -100px;
+                opacity: 0;
+            }
+            to {
+                right: 0px;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="boton" onclick="mostrarEntrada()"></button>
+    <a href="https://puydufouespana.com/espana/es/espectaculo-nocturno-el-sueno-de-toledo"><img src="entrada.jpeg" class="entrada" id="entrada"></a>
+    <img src="matasuegras.png" class="matasuegras izquierda" id="matasuegrasIzquierda">
+    <img src="matasuegras.png" class="matasuegras derecha" id="matasuegrasDerecha">
+
+    <!-- Agregar el sonido -->
+    <audio id="sonido" src="sonido.mp3"></audio> <!-- Asegúrate de tener el archivo de sonido en la misma carpeta -->
+
+    <script>
+        function mostrarEntrada() {
+            // Reproducir sonido
+            document.getElementById('sonido').play();
+
+            document.getElementById('entrada').style.display = 'block';
+            let matasuegrasIzq = document.getElementById('matasuegrasIzquierda');
+            let matasuegrasDer = document.getElementById('matasuegrasDerecha');
+            matasuegrasIzq.style.opacity = '1';
+            matasuegrasDer.style.opacity = '1';
+            matasuegrasIzq.style.animation = 'matasuegrasIzquierdaAnimacion 0.5s ease-in-out forwards';
+            matasuegrasDer.style.animation = 'matasuegrasDerechaAnimacion 0.5s ease-in-out forwards';
+            lanzarConfeti();
+        }
+
+        function lanzarConfeti() {
+            const colores = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
+            for (let i = 0; i < 50; i++) {
+                let confeti = document.createElement('div');
+                confeti.classList.add('confeti');
+                confeti.style.left = Math.random() * window.innerWidth + 'px';
+                confeti.style.top = Math.random() * window.innerHeight + 'px';
+                confeti.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                confeti.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+                document.body.appendChild(confeti);
+                setTimeout(() => confeti.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
