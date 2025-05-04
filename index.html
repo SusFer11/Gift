@@ -47,9 +47,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
-            /* ocupa el 90% del ancho de la pantalla */
             max-width: 600px;
-            /* límite para pantallas grandes */
             height: auto;
             animation: aparecer 1s ease-in-out;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
@@ -109,7 +107,6 @@
             }
         }
 
-        /* Capas iniciales */
         .capa {
             position: fixed;
             top: 0;
@@ -125,30 +122,11 @@
             transition: opacity 1s ease;
         }
 
-        #capa1 {
-            background-image: url('capa1.png');
-            z-index: 9995;
-        }
-
-        #capa2 {
-            background-image: url('capa2.png');
-            z-index: 9994;
-        }
-
-        #capa3 {
-            background-image: url('capa3.png');
-            z-index: 9993;
-        }
-
-        #capa4 {
-            background-image: url('capa4.png');
-            z-index: 9992;
-        }
-
-        #capa5 {
-            background-image: url('capa5.png');
-            z-index: 9991;
-        }
+        #capa1 { background-image: url('capa1.png'); z-index: 9995; }
+        #capa2 { background-image: url('capa2.png'); z-index: 9994; }
+        #capa3 { background-image: url('capa3.png'); z-index: 9993; }
+        #capa4 { background-image: url('capa4.png'); z-index: 9992; }
+        #capa5 { background-image: url('capa5.png'); z-index: 9991; }
 
         @keyframes caerEmoji {
             0% {
@@ -161,7 +139,6 @@
                 opacity: 0;
             }
         }
-
     </style>
 </head>
 
@@ -175,9 +152,7 @@
 
     <!-- Contenido principal -->
     <button class="boton" onclick="mostrarEntrada()"></button>
-    <a href="https://puydufouespana.com/espana/es/espectaculo-nocturno-el-sueno-de-toledo">
-        <img src="entrada.jpeg" class="entrada" id="entrada">
-    </a>
+    <img src="entrada.jpeg" class="entrada" id="entrada">
     <img src="matasuegras.png" class="matasuegras izquierda" id="matasuegrasIzquierda">
     <img src="matasuegras.png" class="matasuegras derecha" id="matasuegrasDerecha">
 
@@ -195,8 +170,10 @@
 
             if (esPrimera) {
                 const sonido = document.getElementById('sonido');
-                sonido.play().catch(() => {
-                    console.log("No se pudo reproducir automáticamente. El navegador lo bloqueó.");
+                sonido.play().then(() => {
+                    console.log("Reproducción iniciada.");
+                }).catch((err) => {
+                    console.log("No se pudo reproducir el audio:", err);
                 });
             }
         }
@@ -229,7 +206,6 @@
                 setTimeout(() => emoji.remove(), 6000);
             }
         }
-
     </script>
 </body>
 
