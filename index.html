@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botón con Imagen</title>
+    <title>Día de la madre</title>
     <style>
         body {
             display: flex;
@@ -45,9 +46,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
+            width: 90vw;
+            /* ocupa el 90% del ancho de la pantalla */
+            max-width: 600px;
+            /* límite para pantallas grandes */
             height: auto;
             animation: aparecer 1s ease-in-out;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
 
         @keyframes aparecer {
@@ -55,28 +61,10 @@
                 opacity: 0;
                 transform: translate(-50%, -60%) scale(0.5);
             }
+
             to {
                 opacity: 1;
                 transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .confeti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: caer 3s linear infinite;
-        }
-
-        @keyframes caer {
-            from {
-                transform: translateY(-100vh);
-                opacity: 1;
-            }
-            to {
-                transform: translateY(100vh);
-                opacity: 0;
             }
         }
 
@@ -102,6 +90,7 @@
                 left: -100px;
                 opacity: 0;
             }
+
             to {
                 left: 0px;
                 opacity: 1;
@@ -113,28 +102,108 @@
                 right: -100px;
                 opacity: 0;
             }
+
             to {
                 right: 0px;
                 opacity: 1;
             }
         }
+
+        /* Capas iniciales */
+        .capa {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9990;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        #capa1 {
+            background-image: url('capa1.png');
+            z-index: 9995;
+        }
+
+        #capa2 {
+            background-image: url('capa2.png');
+            z-index: 9994;
+        }
+
+        #capa3 {
+            background-image: url('capa3.png');
+            z-index: 9993;
+        }
+
+        #capa4 {
+            background-image: url('capa4.png');
+            z-index: 9992;
+        }
+
+        #capa5 {
+            background-image: url('capa5.png');
+            z-index: 9991;
+        }
+
+        @keyframes caerEmoji {
+            0% {
+                transform: translateY(-5vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
+
 <body>
+    <!-- Capas flotantes -->
+    <div id="capa5" class="capa" onclick="quitarCapa('capa5')"></div>
+    <div id="capa4" class="capa" onclick="quitarCapa('capa4')"></div>
+    <div id="capa3" class="capa" onclick="quitarCapa('capa3')"></div>
+    <div id="capa2" class="capa" onclick="quitarCapa('capa2')"></div>
+    <div id="capa1" class="capa" onclick="quitarCapa('capa1', true)"></div>
+
+    <!-- Contenido principal -->
     <button class="boton" onclick="mostrarEntrada()"></button>
-    <a href="https://puydufouespana.com/espana/es/espectaculo-nocturno-el-sueno-de-toledo"><img src="entrada.jpeg" class="entrada" id="entrada"></a>
+    <a href="https://puydufouespana.com/espana/es/espectaculo-nocturno-el-sueno-de-toledo">
+        <img src="entrada.jpeg" class="entrada" id="entrada">
+    </a>
     <img src="matasuegras.png" class="matasuegras izquierda" id="matasuegrasIzquierda">
     <img src="matasuegras.png" class="matasuegras derecha" id="matasuegrasDerecha">
 
-    <!-- Agregar el sonido -->
-    <audio id="sonido" src="sonido.mp3"></audio> <!-- Asegúrate de tener el archivo de sonido en la misma carpeta -->
+    <!-- Audio -->
+    <audio id="sonido" src="cancion-dia-madre.mp3" loop></audio>
 
     <script>
-        function mostrarEntrada() {
-            // Reproducir sonido
-            document.getElementById('sonido').play();
+        function quitarCapa(id, esPrimera = false) {
+            const capa = document.getElementById(id);
+            capa.style.opacity = '0';
+            capa.style.pointerEvents = 'none';
+            setTimeout(() => {
+                capa.style.display = 'none';
+            }, 1000);
 
+            if (esPrimera) {
+                const sonido = document.getElementById('sonido');
+                sonido.play().catch(() => {
+                    console.log("No se pudo reproducir automáticamente. El navegador lo bloqueó.");
+                });
+            }
+        }
+
+        function mostrarEntrada() {
             document.getElementById('entrada').style.display = 'block';
+
             let matasuegrasIzq = document.getElementById('matasuegrasIzquierda');
             let matasuegrasDer = document.getElementById('matasuegrasDerecha');
             matasuegrasIzq.style.opacity = '1';
@@ -145,18 +214,23 @@
         }
 
         function lanzarConfeti() {
-            const colores = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
-            for (let i = 0; i < 50; i++) {
-                let confeti = document.createElement('div');
-                confeti.classList.add('confeti');
-                confeti.style.left = Math.random() * window.innerWidth + 'px';
-                confeti.style.top = Math.random() * window.innerHeight + 'px';
-                confeti.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                confeti.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
-                document.body.appendChild(confeti);
-                setTimeout(() => confeti.remove(), 3000);
+            const simbolos = ['💖', '🌸', '🎀', '💐', '🌷', '💞'];
+            for (let i = 0; i < 40; i++) {
+                let emoji = document.createElement('div');
+                emoji.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+                emoji.style.position = 'absolute';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-2vh';
+                emoji.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                emoji.style.opacity = 0.8;
+                emoji.style.pointerEvents = 'none';
+                emoji.style.animation = 'caerEmoji ' + (Math.random() * 2 + 3) + 's linear forwards';
+                document.body.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 6000);
             }
         }
+
     </script>
 </body>
+
 </html>
